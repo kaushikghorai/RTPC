@@ -135,7 +135,7 @@ fun HomeScreen(
             item {
                 Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp)) {
                     Text(
-                        "Rapid Total PDF Control",
+                        "Raw To PDF Convertor",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.ExtraBold,
                         color = colorScheme.onSurface
