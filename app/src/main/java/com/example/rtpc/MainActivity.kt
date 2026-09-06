@@ -26,6 +26,9 @@ import com.example.rtpc.ui.HomeScreen
 import com.example.rtpc.ui.Screen
 import com.example.rtpc.ui.CameraScanScreen
 import com.example.rtpc.ui.PdfMergeScreen
+import com.example.rtpc.ui.OcrScreen
+import com.example.rtpc.ui.PdfToolsScreen
+import com.example.rtpc.ui.AnalyticsScreen
 import com.example.rtpc.ui.theme.RTPCTheme
 import androidx.navigation3.runtime.NavBackStack
 
@@ -78,6 +81,27 @@ fun RTPCApp() {
                     metadata = ListDetailSceneStrategy.detailPane()
                 ) {
                     PdfMergeScreen(onBack = { if (backStack.size > 1) backStack.removeAt(backStack.size - 1) })
+                }
+
+                is Screen.Ocr -> NavEntry(
+                    key = key,
+                    metadata = ListDetailSceneStrategy.detailPane()
+                ) {
+                    OcrScreen(onBack = { if (backStack.size > 1) backStack.removeAt(backStack.size - 1) })
+                }
+
+                is Screen.PdfTools -> NavEntry(
+                    key = key,
+                    metadata = ListDetailSceneStrategy.detailPane()
+                ) {
+                    PdfToolsScreen(onBack = { if (backStack.size > 1) backStack.removeAt(backStack.size - 1) })
+                }
+
+                is Screen.Analytics -> NavEntry(
+                    key = key,
+                    metadata = ListDetailSceneStrategy.detailPane()
+                ) {
+                    AnalyticsScreen(onBack = { if (backStack.size > 1) backStack.removeAt(backStack.size - 1) })
                 }
             }
         }

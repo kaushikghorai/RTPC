@@ -13,6 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.example.rtpc.data.AppDatabase
+import com.example.rtpc.data.ScannedDocument
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_PDF
@@ -20,6 +22,9 @@ import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.SCANNER
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun CameraScanScreen(onBack: () -> Unit) {
@@ -50,6 +55,15 @@ fun CameraScanScreen(onBack: () -> Unit) {
                     isSaving = false
                     if (success) {
                         Toast.makeText(context, "PDF saved successfully", Toast.LENGTH_SHORT).show()
+                        scope.launch {
+                            AppDatabase.getDatabase(context).documentDao().insertDocument(
+                                ScannedDocument(
+                                    name = destinationUri.lastPathSegment ?: "Scanned PDF",
+                                    uri = destinationUri.toString(),
+                                    type = "SCAN"
+                                )
+                            )
+                        }
                     } else {
                         Toast.makeText(context, "Failed to save PDF", Toast.LENGTH_SHORT).show()
                     }
@@ -68,7 +82,8 @@ fun CameraScanScreen(onBack: () -> Unit) {
                 val scanningResult = com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult.fromActivityResultIntent(result.data)
                 tempPdfUri = scanningResult?.pdf?.uri
                 if (tempPdfUri != null) {
-                    saverLauncher.launch("SCAN_PDF.pdf")
+                    val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                    saverLauncher.launch("${timestamp}_RTPC.pdf")
                 } else {
                     onBack()
                 }

@@ -77,6 +77,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.play.services.location)
     implementation(libs.play.services.mlkit.document.scanner)
+    implementation(libs.play.services.mlkit.text.recognition)
     implementation(libs.retrofit)
     testImplementation(libs.androidx.core)
     testImplementation(libs.androidx.junit)

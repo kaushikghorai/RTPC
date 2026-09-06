@@ -70,6 +70,27 @@ fun HomeScreen(
             Screen.PdfMerge, 
             "Combine Files",
             listOf(colorScheme.tertiary, colorScheme.tertiaryContainer)
+        ),
+        Feature(
+            "OCR Tool",
+            Icons.Rounded.TextFormat,
+            Screen.Ocr,
+            "Extract Text",
+            listOf(colorScheme.secondary, colorScheme.secondaryContainer)
+        ),
+        Feature(
+            "PDF Tools",
+            Icons.Rounded.Build,
+            Screen.PdfTools,
+            "Security & More",
+            listOf(colorScheme.error, colorScheme.errorContainer)
+        ),
+        Feature(
+            "Analytics",
+            Icons.Rounded.Insights,
+            Screen.Analytics,
+            "Usage Stats",
+            listOf(Color(0xFF4CAF50), Color(0xFFC8E6C9))
         )
     )
 
@@ -128,16 +149,47 @@ fun HomeScreen(
             }
 
             item {
-                Row(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        .padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    features.forEach { feature ->
+                    // Row 1: Camera and Merge
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
                         Box(modifier = Modifier.weight(1f)) {
-                            FeatureCard(feature = feature, onClick = { onNavigate(feature.screen) })
+                            FeatureCard(feature = features[0], onClick = { onNavigate(features[0].screen) })
                         }
+                        Box(modifier = Modifier.weight(1f)) {
+                            FeatureCard(feature = features[1], onClick = { onNavigate(features[1].screen) })
+                        }
+                    }
+                    
+                    // Row 2: OCR and PDF Tools
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Box(modifier = Modifier.weight(1f)) {
+                            FeatureCard(feature = features[2], onClick = { onNavigate(features[2].screen) })
+                        }
+                        Box(modifier = Modifier.weight(1f)) {
+                            FeatureCard(feature = features[3], onClick = { onNavigate(features[3].screen) })
+                        }
+                    }
+
+                    // Row 3: Analytics (Single wide or half)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Box(modifier = Modifier.weight(1f)) {
+                            FeatureCard(feature = features[4], onClick = { onNavigate(features[4].screen) })
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
                     }
                 }
             }

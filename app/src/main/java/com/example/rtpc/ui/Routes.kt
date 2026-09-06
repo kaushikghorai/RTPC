@@ -13,4 +13,13 @@ sealed interface Screen : NavKey {
 
     @Serializable
     data object PdfMerge : Screen
+
+    @Serializable
+    data object Ocr : Screen
+
+    @Serializable
+    data object PdfTools : Screen
+
+    @Serializable
+    data object Analytics : Screen
 }

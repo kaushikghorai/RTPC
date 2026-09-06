@@ -30,10 +30,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.rtpc.utils.PageSource
+import com.example.rtpc.data.AppDatabase
+import com.example.rtpc.data.ScannedDocument
 import com.example.rtpc.utils.PdfGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 sealed class MergeState {
     object Selection : MergeState()
@@ -74,6 +79,15 @@ fun PdfMergeScreen(onBack: () -> Unit) {
                     }
                     if (success) {
                         Toast.makeText(context, "PDF saved successfully", Toast.LENGTH_SHORT).show()
+                        scope.launch {
+                            AppDatabase.getDatabase(context).documentDao().insertDocument(
+                                ScannedDocument(
+                                    name = uri.lastPathSegment ?: "Merged PDF",
+                                    uri = uri.toString(),
+                                    type = "MERGE"
+                                )
+                            )
+                        }
                         onBack()
                     } else {
                         Toast.makeText(context, "Failed to save PDF", Toast.LENGTH_SHORT).show()
@@ -162,7 +176,8 @@ fun PdfMergeScreen(onBack: () -> Unit) {
                     if (selectedPageSources.isNotEmpty()) {
                         ExtendedFloatingActionButton(
                             onClick = {
-                                saverLauncher.launch("MERGED_RTPC.pdf")
+                                val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                                saverLauncher.launch("${timestamp}_RTPC.pdf")
                             },
                             icon = { Icon(Icons.Rounded.Check, null) },
                             text = { Text("Save PDF (${selectedPageSources.size} pages)") }
